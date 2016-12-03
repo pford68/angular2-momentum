@@ -2,7 +2,7 @@
  * Tasks related to Browserify
  */
 
-var gulp = require('gulp'),
+let gulp = require('gulp'),
     browserify = require("browserify"),
     gulpif = require('gulp-if'),
     streamify = require('gulp-streamify'),
@@ -28,7 +28,7 @@ function bundle(){
         .pipe(gulp.dest('./build/js'));
 }
 
-var opts = {
+let opts = {
     entries: './main.js',
     basedir: './src/js',
     debug: config.debug,

@@ -2,7 +2,7 @@
  * Common Gulp tasks used at different development phases
  */
 
-var gulp = require('gulp'),
+let gulp = require('gulp'),
     fs = require('fs'),
     jshint = require('gulp-jshint'),
     csslint = require('gulp-csslint'),
@@ -24,7 +24,7 @@ var gulp = require('gulp'),
  */
 gulp.task('sass', function () {
     // Omitting "sass" in src path below created an unwanted "sass" sub-directory.
-    var dest = './build/css',
+    let dest = './build/css',
         src = './src/sass/main.scss';
     del.sync(dest);
     return gulp.src(src)
@@ -64,7 +64,7 @@ gulp.task('css-lint', ['sass'], function() {
  Images task:  copying images to the proper location
  */
 gulp.task('images', function () {
-    var dest = './build/images',
+    let dest = './build/images',
         src = './src/images/**/*';
     del.sync(dest);
     return gulp.src(src, { base: './src/images' })

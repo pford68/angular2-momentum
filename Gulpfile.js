@@ -7,7 +7,7 @@
  *
  * To start the dev server:  gulp dev
  */
-var gulp = require('gulp'),
+let gulp = require('gulp'),
     del = require('del'),                       // For deleting files and directories
     merge = require("merge-stream"),            // Combines multiple streams into one.
     requireDir = require("require-dir"),        // Imports an entire directory

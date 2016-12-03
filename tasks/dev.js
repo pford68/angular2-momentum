@@ -9,7 +9,7 @@
  *       See https://www.npmjs.org/package/gulp-livereload
  */
 
-var gulp = require('gulp'),
+let gulp = require('gulp'),
     karma = require('karma'),
     path = require('path'),
     merge = require('merge-stream'),            // Combines multiple streams into one.
