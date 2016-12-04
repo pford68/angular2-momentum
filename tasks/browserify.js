@@ -13,23 +13,40 @@ let gulp = require('gulp'),
     watchify = require('watchify'),
     tsify = require('tsify'),
     config = require("config"),
-    opts = {
+    dev = !process.env.NODE_ENV || process.env.NODE_ENV === 'development',
+    ignoreWatch = !dev,
+    bundler;
+
+
+//========================================================= Configuration
+Object.assign(config, {
+    browserify: {
         entries: './main.ts',
         basedir: './src/ts',
         debug: config.debug,
         cache: {},
-        packageCache: {}
+        packageCache: {},
+        plugin: [
+            [watchify, {poll:true}]   // poll = true has been necessary on my work laptop.
+        ]
     },
-    bundler;
+    tsify: {
+        noImplicitAny: true,
+        experimentalDecorators: true,
+        emitDecoratorMetadata: true,
+        noEmitHelpers: false            // CartController.ts:7 Uncaught ReferenceError: __decorate is not defined(…)
+    },
+    babelify: {
+        presets: ['latest', 'angular2'],   // https://github.com/shuhei/babel-angular2-app/issues/28
+        extensions: ['.ts', '.js']
+    }
+});
+console.log('Build configuration: ', config);
 
-config.tsify = {
-    noImplicitAny: true,
-    experimentalDecorators: true,
-    emitDecoratorMetadata: true,
-    noEmitHelpers: false            // CartController.ts:7 Uncaught ReferenceError: __decorate is not defined(…)
-};
 
-function bundle(){
+
+//========================================================== Initialization
+function bundle() {
     let entryPoint = './src/ts/main.ts';
     return bundler.bundle()
         .pipe(source(entryPoint))
@@ -38,14 +55,10 @@ function bundle(){
         .pipe(gulp.dest('./build/js'));
 }
 
-
-bundler = watchify(browserify(opts), {poll: true})
+bundler = browserify(config.browserify)
     .plugin(tsify, config.tsify)
-    .transform('babelify', {
-        presets: ['latest', 'angular2'],   // https://github.com/shuhei/babel-angular2-app/issues/28
-        extensions: [ '.ts', '.js' ]
-    })
-    .on('update', bundle)
+    .transform('babelify', config.babelify)
+    .on('update', bundle)          // Absolutely necessary for the server to reload, and probably to re-bundle
     .on('error', (err) => {
         gutil.log(`Browserify error: ${err.message}`);
         // end this stream
@@ -54,6 +67,8 @@ bundler = watchify(browserify(opts), {poll: true})
 
 
 
+
+//========================================================= Tasks
 /*
  Browserify task.
 

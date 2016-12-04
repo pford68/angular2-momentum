@@ -1,7 +1,6 @@
 /**
  *
  */
-console.log('CartService');
 export class CartService {
     private items = [
         { title: 'Caramalized Sumatra', quantity: 4, price: 9.54 },

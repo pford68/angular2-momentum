@@ -7,6 +7,6 @@ import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 //import { AppModule } from './app';
 import {CartModule} from './cart';
 
-console.log('OK!!!');
+console.log('Hello, from the Shopping Cart!');
 
 platformBrowserDynamic().bootstrapModule(CartModule);
