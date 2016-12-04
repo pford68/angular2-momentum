@@ -1,0 +1,7 @@
+<div *ngFor="item in items">
+    <span>{{item.title}}</span>
+    <input type="text" [(NgModel)]="item.quantity" />
+    <span>{{item.price | currency}}</span>
+    <span>{{item.price * item.quantity | currency}}</span>
+    <button (click)="remove($index)">Remove</button>
+</div>

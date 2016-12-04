@@ -1,5 +1,5 @@
 /**
- * Tasks related to Browserify
+ * Tasks related to Browserify.  Adds watchify to watch for
  */
 
 let gulp = require('gulp'),
@@ -10,34 +10,31 @@ let gulp = require('gulp'),
     rename = require('gulp-rename'),
     source = require('vinyl-source-stream'),
     buffer = require('vinyl-buffer'),
-    sourcemaps = require('gulp-sourcemaps'),
     watchify = require('watchify'),
+    tsify = require('tsify'),
     config = require("config"),
-    bundler;
+    opts = {
+        entries: './main.ts',
+        basedir: './src/ts',
+        debug: config.debug,
+        cache: {},
+        packageCache: {}
+    },
+    b = browserify(opts);
+
+b = watchify(b, {poll: true})
+    .plugin(tsify, { noImplicitAny: true });
 
 
 function bundle(){
-    return bundler.bundle()
-        .pipe(source('./src/js/main.js'))
+    let entryPoint = './src/ts/main.ts';
+    return b.bundle()
+        .pipe(source(entryPoint))
         .pipe(gulpif(config.debug === false, streamify(uglify())))
         .pipe(rename("main.js"))
         .pipe(buffer())
-        .pipe(sourcemaps.init({loadMaps: true})) // loads map from browserify file
-        // Add transformation tasks to the pipeline here.
-        .pipe(sourcemaps.write('./')) // writes .map file
         .pipe(gulp.dest('./build/js'));
 }
-
-let opts = {
-    entries: './main.js',
-    basedir: './src/js',
-    debug: config.debug,
-    cache: {},
-    packageCache: {}
-};
-bundler = watchify(browserify(opts), {poll: true})
-    .transform('babelify', { presets: 'latest'})
-    .on('update', bundle);
 
 /*
  Browserify task.
@@ -45,3 +42,4 @@ bundler = watchify(browserify(opts), {poll: true})
  Fetches dependencies, and compresses the resulting JS bundle if not in debug mode.
  */
 gulp.task("browserify", bundle);
+b.on('update', bundle);
