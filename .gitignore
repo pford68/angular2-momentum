@@ -97,4 +97,6 @@ fabric.properties
 
 .idea/
 angular2-momentum.iml
-node_modules/
+
+# Artifacts
+build
