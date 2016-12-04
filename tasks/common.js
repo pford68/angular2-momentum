@@ -77,6 +77,7 @@ gulp.task('images', () => {
 gulp.task('views', () => {
     return gulp.src([
         './src/**/*.html',
+        './src/**/*.css',
         './src/templates/*.html'
     ], { base: './src' })
         .pipe(gulp.dest(gDestDir));

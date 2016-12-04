@@ -7,7 +7,7 @@ import { CartService } from './CartService'
     moduleId: 'ts/cart/',
     selector: 'shopping-cart',
     templateUrl: 'view.html',
-    //styleUrls: [ 'view.css' ],
+    styleUrls: [ 'view.css' ],
     providers: [ CartService ]
 })
 export class Cart {
