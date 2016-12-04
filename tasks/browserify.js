@@ -1,44 +1,74 @@
 /**
- * Tasks related to Browserify
+ * Tasks related to Browserify.  Adds watchify to watch for
  */
 
-var gulp = require('gulp'),
+let gulp = require('gulp'),
+    gutil = require('gulp-util'),
     browserify = require("browserify"),
     gulpif = require('gulp-if'),
     streamify = require('gulp-streamify'),
     uglify = require('gulp-uglify'),
     rename = require('gulp-rename'),
     source = require('vinyl-source-stream'),
-    buffer = require('vinyl-buffer'),
-    sourcemaps = require('gulp-sourcemaps'),
     watchify = require('watchify'),
+    tsify = require('tsify'),
     config = require("config"),
+    dev = !process.env.NODE_ENV || process.env.NODE_ENV === 'development',
+    ignoreWatch = !dev,
     bundler;
 
 
-function bundle(){
+//========================================================= Configuration
+Object.assign(config, {
+    browserify: {
+        entries: './main.ts',
+        basedir: './src/ts',
+        debug: config.debug,
+        cache: {},
+        packageCache: {},
+        plugin: [
+            [watchify, {poll:true}]   // poll = true has been necessary on my work laptop.
+        ]
+    },
+    tsify: {
+        noImplicitAny: true,
+        experimentalDecorators: true,
+        emitDecoratorMetadata: true,
+        noEmitHelpers: false            // CartController.ts:7 Uncaught ReferenceError: __decorate is not defined(…)
+    },
+    babelify: {
+        presets: ['latest', 'angular2'],   // https://github.com/shuhei/babel-angular2-app/issues/28
+        extensions: ['.ts', '.js']
+    }
+});
+console.log('Build configuration: ', config);
+
+
+
+//========================================================== Initialization
+function bundle() {
+    let entryPoint = './src/ts/main.ts';
     return bundler.bundle()
-        .pipe(source('./src/js/main.js'))
+        .pipe(source(entryPoint))
         .pipe(gulpif(config.debug === false, streamify(uglify())))
         .pipe(rename("main.js"))
-        .pipe(buffer())
-        .pipe(sourcemaps.init({loadMaps: true})) // loads map from browserify file
-        // Add transformation tasks to the pipeline here.
-        .pipe(sourcemaps.write('./')) // writes .map file
         .pipe(gulp.dest('./build/js'));
 }
 
-var opts = {
-    entries: './main.js',
-    basedir: './src/js',
-    debug: config.debug,
-    cache: {},
-    packageCache: {}
-};
-bundler = watchify(browserify(opts), {poll: true})
-    .transform('babelify', { presets: 'latest'})
-    .on('update', bundle);
+bundler = browserify(config.browserify)
+    .plugin(tsify, config.tsify)
+    .transform('babelify', config.babelify)
+    .on('update', bundle)          // Absolutely necessary for the server to reload, and probably to re-bundle
+    .on('error', (err) => {
+        gutil.log(`Browserify error: ${err.message}`);
+        // end this stream
+        this.emit('end');
+    });
 
+
+
+
+//========================================================= Tasks
 /*
  Browserify task.
 
