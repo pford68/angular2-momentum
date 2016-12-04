@@ -1,23 +1,23 @@
 'use strict';
-import {Component} from "@angular/core";
-import {module} from "@angular/upgrade/src/angular_js";
+import {Component, Input} from "@angular/core";
 import { CartService } from './CartService'
 
-/*
 
-*/
 @Component({
-    moduleId: module.id
+    moduleId: 'ts/cart/',
     selector: 'shopping-cart',
     templateUrl: 'view.html',
-    styleUrls: [ 'view.css' ],
+    //styleUrls: [ 'view.css' ],
     providers: [ CartService ]
 })
-
 export class Cart {
-    items = [];
+    @Input items = [];
 
     constructor(service: CartService){
         this.items = service.getAll();
+    }
+
+    remove(index: number){
+        this.items.splice(index, 1);
     }
 }
