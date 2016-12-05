@@ -1,5 +1,5 @@
 /**
- * Tasks related to Browserify.  Adds watchify to watch for
+ * Tasks related to Browserify.  Adds watchify to watch for changes
  */
 
 let gulp = require('gulp'),
