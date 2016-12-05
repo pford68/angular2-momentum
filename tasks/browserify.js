@@ -10,7 +10,6 @@ let gulp = require('gulp'),
     uglify = require('gulp-uglify'),
     rename = require('gulp-rename'),
     source = require('vinyl-source-stream'),
-    watchify = require('watchify'),
     tsify = require('tsify'),
     config = require('./config/browserify.cfg'),
     bundler;
