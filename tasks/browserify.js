@@ -31,7 +31,8 @@ Object.assign(config, {
         ]
     },
     tsify: {
-        noImplicitAny: true,
+        target: 'ES6',
+        noImplicitAny: false,
         experimentalDecorators: true,
         emitDecoratorMetadata: true,
         noEmitHelpers: false            // CartController.ts:7 Uncaught ReferenceError: __decorate is not defined(…)
@@ -41,6 +42,9 @@ Object.assign(config, {
         extensions: ['.ts', '.js']
     }
 });
+if (!dev){
+    delete config.browserify.plugin;
+}
 console.log('Build configuration: ', config);
 
 

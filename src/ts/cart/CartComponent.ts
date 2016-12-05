@@ -11,13 +11,14 @@ import { CartService } from './CartService'
     providers: [ CartService ]
 })
 export class Cart {
-    @Input items = [];
+    @Input() items = [];
 
     constructor(service: CartService){
         this.items = service.getAll();
     }
 
     remove(index: number){
+        console.log('index', index);
         this.items.splice(index, 1);
     }
 }

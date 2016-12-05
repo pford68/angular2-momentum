@@ -1,6 +1,10 @@
 /**
  *
  */
+import {Injectable} from "@angular/core";
+
+
+@Injectable()
 export class CartService {
     private items = [
         { title: 'Caramalized Sumatra', quantity: 4, price: 9.54 },
