@@ -28,7 +28,9 @@ the server and browser reload.
 ### Build Configuration
 * Debug mode is set in the `config` directory.
 * Browserify, Tsify, Babelify, and Watchify are all currently configured in `tasks/browserify.js`.
-* Tsify options, needed for Angular 2 TypeScript and ES6 support:
+
+Tsify options, needed for Angular 2 TypeScript and ES6 support:
+
   ```javascript
   {
     target: 'ES6',                  // Necessary, even though the app builds without it when Watchify is active.
