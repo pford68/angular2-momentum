@@ -1,6 +1,7 @@
 /**
- *
+ * Cart Module:  main application module.
  */
+
 'use strict';
 import {NgModule}      from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';

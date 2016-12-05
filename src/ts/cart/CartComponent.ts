@@ -1,3 +1,7 @@
+/**
+ * Controller for the shopping cart view.
+ */
+
 'use strict';
 import {Component, Input} from "@angular/core";
 import { CartService } from './CartService'

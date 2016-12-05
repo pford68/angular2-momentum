@@ -1,8 +1,9 @@
 /**
- *
+ * Provides access to the product list.
  */
-import {Injectable} from "@angular/core";
+'use strict';
 
+import {Injectable} from "@angular/core";
 
 @Injectable()
 export class CartService {
