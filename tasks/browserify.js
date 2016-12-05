@@ -31,7 +31,7 @@ Object.assign(config, {
         ]
     },
     tsify: {
-        target: 'ES6',
+        target: 'ES6',                  // Necessary, even though the app builds without it when Watchify is active.
         noImplicitAny: false,
         experimentalDecorators: true,
         emitDecoratorMetadata: true,
