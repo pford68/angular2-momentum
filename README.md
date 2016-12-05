@@ -29,6 +29,7 @@ the server and browser reload.
 * Debug mode is set in the `config` directory.
 * Browserify, Tsify, Babelify, and Watchify are all currently configured in `tasks/browserify.js`.
 
+### Tsify
 Tsify options, needed for Angular 2 TypeScript and ES6 support:
 
   ```javascript
@@ -40,3 +41,6 @@ Tsify options, needed for Angular 2 TypeScript and ES6 support:
     noEmitHelpers: false     // CartController.ts:7 Uncaught ReferenceError: __decorate is not defined(…)
   }
   ```
+  
+#### Source Maps
+Tsify will produce source maps automatically when Browserify's `debug` option is set to `true`.
